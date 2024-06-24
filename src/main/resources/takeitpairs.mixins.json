@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "net.yukulab.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"MixinLivingEntity",
+		"MixinServerPlayerEntity"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

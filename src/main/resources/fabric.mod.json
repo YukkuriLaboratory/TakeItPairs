@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "takeitpairs",
+	"version": "${version}",
+	"name": "TakeItPairs",
+	"description": "People cannot live alone.",
+	"authors": [
+		"turtton"
+	],
+	"contact": {
+		"sources": "https://github.com/YukkuriLaboratory/TakeItPairs"
+	},
+	"license": "MIT",
+	"icon": "assets/takeitpairs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.yukulab.TakeItPairs"
+		],
+		"client": [
+			"net.yukulab.TakeItPairsClient"
+		]
+	},
+	"mixins": [
+		"takeitpairs.mixins.json",
+		{
+			"config": "takeitpairs.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

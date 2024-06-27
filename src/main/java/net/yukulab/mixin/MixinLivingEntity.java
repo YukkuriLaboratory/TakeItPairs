@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import net.yukulab.extension.TakeIrPairs$ForceSpawnConsumptionEffects;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(LivingEntity.class)
 abstract public class MixinLivingEntity implements TakeIrPairs$ForceSpawnConsumptionEffects {
@@ -33,7 +34,7 @@ abstract public class MixinLivingEntity implements TakeIrPairs$ForceSpawnConsump
         }
 
         if (stack.getUseAction() == UseAction.EAT) {
-            spawnItemParticlesForAll(stack, particleCount);
+            takeitpairs$spawnItemParticlesForAll(stack, particleCount);
             livingEntity.getWorld().playSound(null, livingEntity.getBlockPos(), getEatSound(stack), SoundCategory.PLAYERS, 0.5F + 0.5F * livingEntity.getRandom().nextInt(2), (livingEntity.getRandom().nextFloat() - livingEntity.getRandom().nextFloat()) * 0.2F + 1.0F);
         }
     }
@@ -41,8 +42,9 @@ abstract public class MixinLivingEntity implements TakeIrPairs$ForceSpawnConsump
     /**
      * {@link LivingEntity#spawnItemParticles(ItemStack, int)}
      */
+    @Unique
     @SuppressWarnings("UnreachableCode")
-    private void spawnItemParticlesForAll(ItemStack stack, int count) {
+    private void takeitpairs$spawnItemParticlesForAll(ItemStack stack, int count) {
         var livingEntity = (LivingEntity) (Object) this;
         if (livingEntity.getWorld() instanceof ServerWorld serverWorld) {
             for (int i = 0; i < count; i++) {

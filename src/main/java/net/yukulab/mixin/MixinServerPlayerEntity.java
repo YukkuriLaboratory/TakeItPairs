@@ -1,10 +1,13 @@
 package net.yukulab.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -42,8 +45,9 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
             var targetHand = Hand.MAIN_HAND;
             var handItem = player.getStackInHand(targetHand);
             if (handItem.isEmpty() && !player.hasPassenger(entity)) {
-                //FIXME Sync player ride state
-                player.startRiding(entity);
+                if (player.startRiding(entity)) {
+                    entity.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
+                }
                 return ActionResult.SUCCESS;
             }
             var foodComponent = handItem.get(DataComponentTypes.FOOD);
@@ -69,6 +73,16 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
     private void updatePassedItemState(CallbackInfo ci) {
         if (takeitpairs$feedingPlayer != null && --takeitpairs$resetFeedingLeft < 0) {
             takeitpairs$resetFeedingTarget();
+        }
+    }
+
+    @Inject(
+            method = "stopRiding",
+            at = @At("TAIL")
+    )
+    private void syncForVehiclePlayer(CallbackInfo ci, @Local Entity entity) {
+        if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
+            serverPlayerEntity.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
         }
     }
 

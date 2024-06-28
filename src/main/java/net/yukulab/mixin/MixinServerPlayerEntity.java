@@ -1,7 +1,9 @@
 package net.yukulab.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.logging.LogUtils;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.yukulab.extension.TakeItPairs$Feeding;
@@ -44,6 +47,8 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
     private int takeitpairs$feedingTimeLeft = 0;
     @Unique
     private int takeitpairs$resetFeedingLeft = 0;
+//    @Unique
+//    private static final Hand[] takeitpairs$acceptHands = {Hand.MAIN_HAND, Hand.OFF_HAND};
 
     @SuppressWarnings("UnreachableCode")
     @Override
@@ -58,6 +63,13 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
                 }
                 return ActionResult.SUCCESS;
             }
+            if(handItem.getUseAction() == UseAction.DRINK) {
+                if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
+                    LogUtils.getLogger().debug("[TIP] Fired potionComponent");
+                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);
+                    return ActionResult.SUCCESS;
+                }
+            }
             var foodComponent = handItem.get(DataComponentTypes.FOOD);
             if (foodComponent == null || !entity.canConsume(foodComponent.canAlwaysEat())) {
                 targetHand = Hand.OFF_HAND;
@@ -66,7 +78,7 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
             }
             if (foodComponent != null && entity.canConsume(foodComponent.canAlwaysEat())) {
                 if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
-                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, hand);
+                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);
                 }
                 return ActionResult.SUCCESS;
             }
@@ -138,23 +150,23 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
      * {@link LivingEntity#consumeItem()}
      */
     @Override
-    public void takeitpairs$startFeeding(ServerPlayerEntity target, ItemStack food, Hand hand) {
+    public void takeitpairs$startFeeding(ServerPlayerEntity target, ItemStack feedItem, Hand hand) {
         takeitpairs$resetFeedingLeft = 4;
         if (!target.equals(takeitpairs$feedingPlayer)) {
             takeitpairs$feedingPlayer = target;
-            takeitpairs$feedingTimeLeft = food.getMaxUseTime(target);
+            takeitpairs$feedingTimeLeft = feedItem.getMaxUseTime(target);
         }
-        if (takeitpairs$shouldSpawnFeedingEffects(food)) {
+        if (takeitpairs$shouldSpawnFeedingEffects(feedItem)) {
             if (target instanceof TakeIrPairs$ForceSpawnConsumptionEffects t) {
-                t.takeitpairs$forceSpawnConsumptionEffects(food, 5);
+                t.takeitpairs$forceSpawnConsumptionEffects(feedItem, 5);
             }
         }
-        if (--takeitpairs$feedingTimeLeft == 0 && !food.isUsedOnRelease()) {
+        if (--takeitpairs$feedingTimeLeft == 0 && !feedItem.isUsedOnRelease()) {
             if (target instanceof TakeIrPairs$ForceSpawnConsumptionEffects t) {
-                t.takeitpairs$forceSpawnConsumptionEffects(food, 16);
+                t.takeitpairs$forceSpawnConsumptionEffects(feedItem, 16);
             }
-            var newItem = food.finishUsing(getWorld(), target);
-            if (newItem != food) {
+            var newItem = feedItem.finishUsing(getWorld(), target);
+            if (newItem != feedItem) {
                 setStackInHand(hand, newItem);
             }
             takeitpairs$resetFeedingTarget();

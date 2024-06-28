@@ -1,11 +1,12 @@
 {
-	"required": true,
-	"package": "net.yukulab.mixin.client",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"MixinClientPlayerInteractionManager"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "net.yukulab.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MixinClientPlayerInteractionManager",
+    "MixinLivingEntityRender"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

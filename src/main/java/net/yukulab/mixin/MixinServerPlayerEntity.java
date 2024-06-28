@@ -15,6 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.yukulab.extension.TakeItPairs$Feeding;
@@ -62,13 +63,12 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
                 }
                 return ActionResult.SUCCESS;
             }
-            var potionComponent = handItem.get(DataComponentTypes.POTION_CONTENTS);
-            if(potionComponent != null) {
+            if(handItem.getUseAction() == UseAction.DRINK) {
                 if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
                     LogUtils.getLogger().debug("[TIP] Fired potionComponent");
-                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, hand);
+                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);
+                    return ActionResult.SUCCESS;
                 }
-                return ActionResult.SUCCESS;
             }
             var foodComponent = handItem.get(DataComponentTypes.FOOD);
             if (foodComponent == null || !entity.canConsume(foodComponent.canAlwaysEat())) {
@@ -78,7 +78,7 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
             }
             if (foodComponent != null && entity.canConsume(foodComponent.canAlwaysEat())) {
                 if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
-                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, hand);
+                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);
                 }
                 return ActionResult.SUCCESS;
             }

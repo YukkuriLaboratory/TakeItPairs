@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.UseAction;
 import net.minecraft.util.hit.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,10 +21,7 @@ public abstract class MixinClientPlayerInteractionManager {
             cancellable = true
     )
     private void checkInteractWithPotion(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if(MinecraftClient.getInstance().crosshairTarget instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity) {
-            if(player.getMainHandStack().getItem() == Items.POTION) {
-
-            }
+        if(player.getMainHandStack().getUseAction() == UseAction.DRINK && MinecraftClient.getInstance().crosshairTarget instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }

@@ -3,7 +3,8 @@
     "package": "net.yukulab.mixin.client",
     "compatibilityLevel": "JAVA_21",
     "client": [
-        "MixinClientPlayerInteractionManager"
+        "MixinClientPlayerInteractionManager",
+        "MixinLivingEntityRender"
     ],
     "injectors": {
         "defaultRequire": 1

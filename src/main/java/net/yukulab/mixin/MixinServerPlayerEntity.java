@@ -1,7 +1,9 @@
 package net.yukulab.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.logging.LogUtils;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -44,6 +46,8 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
     private int takeitpairs$feedingTimeLeft = 0;
     @Unique
     private int takeitpairs$resetFeedingLeft = 0;
+//    @Unique
+//    private static final Hand[] takeitpairs$acceptHands = {Hand.MAIN_HAND, Hand.OFF_HAND};
 
     @SuppressWarnings("UnreachableCode")
     @Override
@@ -55,6 +59,14 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
             if (handItem.isEmpty() && !player.hasPassenger(entity)) {
                 if (player.startRiding(entity)) {
                     entity.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(entity));
+                }
+                return ActionResult.SUCCESS;
+            }
+            var potionComponent = handItem.get(DataComponentTypes.POTION_CONTENTS);
+            if(potionComponent != null) {
+                if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
+                    LogUtils.getLogger().debug("[TIP] Fired potionComponent");
+                    takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, hand);
                 }
                 return ActionResult.SUCCESS;
             }
@@ -138,23 +150,23 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
      * {@link LivingEntity#consumeItem()}
      */
     @Override
-    public void takeitpairs$startFeeding(ServerPlayerEntity target, ItemStack food, Hand hand) {
+    public void takeitpairs$startFeeding(ServerPlayerEntity target, ItemStack feedItem, Hand hand) {
         takeitpairs$resetFeedingLeft = 4;
         if (!target.equals(takeitpairs$feedingPlayer)) {
             takeitpairs$feedingPlayer = target;
-            takeitpairs$feedingTimeLeft = food.getMaxUseTime(target);
+            takeitpairs$feedingTimeLeft = feedItem.getMaxUseTime(target);
         }
-        if (takeitpairs$shouldSpawnFeedingEffects(food)) {
+        if (takeitpairs$shouldSpawnFeedingEffects(feedItem)) {
             if (target instanceof TakeIrPairs$ForceSpawnConsumptionEffects t) {
-                t.takeitpairs$forceSpawnConsumptionEffects(food, 5);
+                t.takeitpairs$forceSpawnConsumptionEffects(feedItem, 5);
             }
         }
-        if (--takeitpairs$feedingTimeLeft == 0 && !food.isUsedOnRelease()) {
+        if (--takeitpairs$feedingTimeLeft == 0 && !feedItem.isUsedOnRelease()) {
             if (target instanceof TakeIrPairs$ForceSpawnConsumptionEffects t) {
-                t.takeitpairs$forceSpawnConsumptionEffects(food, 16);
+                t.takeitpairs$forceSpawnConsumptionEffects(feedItem, 16);
             }
-            var newItem = food.finishUsing(getWorld(), target);
-            if (newItem != food) {
+            var newItem = feedItem.finishUsing(getWorld(), target);
+            if (newItem != feedItem) {
                 setStackInHand(hand, newItem);
             }
             takeitpairs$resetFeedingTarget();

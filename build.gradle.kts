@@ -47,7 +47,7 @@ dependencies {
 	modImplementation("net.fabricmc:fabric-loader:${loader_version}")
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-//	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 
 	// Include dependencies
 	include("com.google.code.gson:gson:2.11.0")

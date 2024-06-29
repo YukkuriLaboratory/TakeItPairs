@@ -31,12 +31,14 @@ public class ConfigIO {
     }
 
     public static File getConfigDir() {
-        return new File(getWorldConfigDir(), configFolderName);
+        File configDir = new File(getWorldConfigDir(), configFolderName);
+        if(!configDir.exists()) configDir.mkdir();
+        return configDir;
     }
 
     @VisibleForTesting
     public static <T> File getConfigFile(@NotNull Class<T> configClass) {
-        return new File(getConfigDir(), getConfigFileSuffix(configClass));
+        return new File(getConfigDir(), getConfigFileSuffix(configClass) + ".json");
     }
 
     // === Read & Write

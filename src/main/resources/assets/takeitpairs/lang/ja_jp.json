@@ -1,0 +1,9 @@
+{
+    "title.takeitpairs.config": "TakeItPairsの設定",
+    "category.takeitpairs.render": "レンダリング",
+    "option.takeitpairs.render.riderposy": "乗っているプレイヤーのY座標",
+    "option.takeitpairs.render.riderposy.modifier": "乗っているプレイヤーのY座標の変化量(キー用)",
+    "key.takeitpair.category.general": "TakeItPairsの全般設定",
+    "key.takeitpairs.riderposy.increase": "乗っているプレイヤーのY座標を上げる",
+    "key.takeitpairs.riderposy.lower": "乗っているプレイヤーのY座標を下げる"
+}

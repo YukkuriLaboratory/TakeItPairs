@@ -19,6 +19,9 @@
 		],
 		"client": [
 			"net.yukulab.TakeItPairsClient"
+		],
+		"modmenu": [
+			"net.yukulab.ModMenuIntegration"
 		]
 	},
 	"mixins": [

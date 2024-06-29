@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import net.yukulab.config.ClientConfig;
 import net.yukulab.config.ConfigIO;
+import net.yukulab.util.MathUtil;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -25,7 +26,12 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
     }
 
     @Override
-    public void takeitpairs$setClientConfig(@NotNull ClientConfig newConfig) {
+    public void takeitpairs$setClientConfig(@NotNull ClientConfig config) {
+        // Round double value
+        var newConfig = new ClientConfig(
+                MathUtil.floor(3, config.riderPosY()),
+                MathUtil.round(3, config.riderPosYModifier())
+        );
         takeitpairs$clientConfig = newConfig;
         // Save config
         ConfigIO.writeConfig(newConfig);

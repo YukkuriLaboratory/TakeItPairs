@@ -27,11 +27,11 @@ public class TakeItPairsKeyBinds {
     public static void onClientTick(MinecraftClient client) {
         while (RIDER_POS_Y_INCREASE.wasPressed()) {
             var config = ((TakeItPairs$ClientConfigHolder) client).takeitpairs$getClientConfig();
-            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() - Math.abs(config.riderPosYModifier()), config.riderPosYModifier()));
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() + Math.abs(config.riderPosYModifier()), config.riderPosYModifier()));
         }
         while (RIDER_POS_Y_DECREASE.wasPressed()) {
             var config = ((TakeItPairs$ClientConfigHolder) client).takeitpairs$getClientConfig();
-            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() + Math.abs(config.riderPosYModifier()), config.riderPosYModifier()));
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() - Math.abs(config.riderPosYModifier()), config.riderPosYModifier()));
         }
     }
 }

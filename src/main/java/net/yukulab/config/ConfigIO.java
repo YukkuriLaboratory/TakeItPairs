@@ -50,7 +50,7 @@ public class ConfigIO {
     public static <T> void writeConfig(@NotNull File configFile, @NotNull T config) {
         try(var writer = new FileWriter(configFile, false)) {
             writer.write(gson.toJson(config));
-            TakeItPairs.LOGGER.info("{} was wrote.", configFile.getName());
+            TakeItPairs.LOGGER.debug("{} was wrote.", configFile.getName());
         } catch (IOException e) {
             TakeItPairs.LOGGER.error("Failed to write config", e);
         }

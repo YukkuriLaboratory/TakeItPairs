@@ -5,5 +5,5 @@
     "option.takeitpairs.render.riderposy.modifier": "Rider's pos Y Modifier (Keybind)",
     "key.takeitpair.category.general": "TakeItPairs General",
     "key.takeitpairs.riderposy.increase": "Increase Rider's pos Y",
-    "key.takeitpairs.riderposy.decrease": "Decrease Rider's pos Y"
+    "key.takeitpairs.riderposy.lower": "Decrease Rider's pos Y"
 }

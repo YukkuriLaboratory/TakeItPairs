@@ -18,7 +18,7 @@ public class TakeItPairsKeyBinds {
                 GENERAL_CATEGORY
         ));
         RIDER_POS_Y_DECREASE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.takeitpairs.riderposy.decrease",
+                "key.takeitpairs.riderposy.lower",
                 GLFW.GLFW_KEY_UNKNOWN,
                 GENERAL_CATEGORY
         ));

@@ -9,6 +9,7 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
+import net.yukulab.config.ClientConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,14 +22,15 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;animateModel(Lnet/minecraft/entity/Entity;FFF)V")
     )
     public void renderPlayer(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-//        double riderPosY = -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().riderPosY();
-        double riderPosY = 0.325;
-        // TODO change to constant variable
-        double riderPosZ = -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().getRiderPosZ();
+        ClientConfig config = ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig();
+
+        // TODO export these magic number to config
+        double riderPosY = config.isShoulderRideMode() ? 0.325 : -config.getRiderPosY();
+        double riderPosZ = config.isShoulderRideMode() ? 0.5 : -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().getRiderPosZ();
 
         // === Change rider pos from config value ===
         // render other player
-        if (livingEntity instanceof OtherClientPlayerEntity otherClientPlayerEntity && otherClientPlayerEntity.hasVehicle()) {
+        if (livingEntity instanceof OtherClientPlayerEntity otherClientPlayerEntity && otherClientPlayerEntity.hasVehicle() && otherClientPlayerEntity.getVehicle() instanceof ClientPlayerEntity) {
             matrixStack.translate(0, riderPosY, riderPosZ);
         }
 
@@ -36,16 +38,5 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
         if (livingEntity instanceof ClientPlayerEntity clientPlayerEntity && clientPlayerEntity.hasVehicle() && clientPlayerEntity.getVehicle() instanceof OtherClientPlayerEntity) {
             matrixStack.translate(0, riderPosY, riderPosZ);
         }
-
-//        // === Change rider pos from config value ===
-//        // render other player
-//        if(livingEntity instanceof OtherClientPlayerEntity otherClientPlayerEntity && otherClientPlayerEntity.hasVehicle()) {
-//            matrixStack.translate(0, riderPosY,0);
-//        }
-//
-//        // render self
-//        if(livingEntity instanceof ClientPlayerEntity clientPlayerEntity && clientPlayerEntity.hasVehicle() && clientPlayerEntity.getVehicle() instanceof OtherClientPlayerEntity) {
-//            matrixStack.translate(0, riderPosY, 0);
-//        }
     }
 }

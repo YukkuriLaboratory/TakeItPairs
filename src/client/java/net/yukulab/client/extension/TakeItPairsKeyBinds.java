@@ -3,17 +3,16 @@ package net.yukulab.client.extension;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
-import net.yukulab.config.ClientConfig;
 import org.lwjgl.glfw.GLFW;
 
 public class TakeItPairsKeyBinds {
     private static final String GENERAL_CATEGORY = "key.takeitpairs.category.render",
-                                DEBUG_CATEGORY = "key.takeitpairs.category.debug"; // TODO add to lang file
+            DEBUG_CATEGORY = "key.takeitpairs.category.debug"; // TODO add to lang file
     private static KeyBinding RIDER_POS_Y_INCREASE,
             RIDER_POS_Y_DECREASE,
             RIDER_POS_Z_INCREASE,
             RIDER_POS_Z_DECREASE,
-            CHANGE_RIDE_MODE;
+            RIDE_ON_SHOULDERS;
 
     public static void init() {
         // TODO needs to change translation key in lang file
@@ -42,23 +41,38 @@ public class TakeItPairsKeyBinds {
         ));
 
         // Mode Change
-        CHANGE_RIDE_MODE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.takeitpairs.riderpos.change_ride_mode",
+        RIDE_ON_SHOULDERS = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.takeitpairs.riderpos.ride_on_shoulders",
                 GLFW.GLFW_KEY_UNKNOWN,
                 GENERAL_CATEGORY
         ));
     }
 
     public static void onClientTick(MinecraftClient client) {
+        var config = ((TakeItPairs$ClientConfigHolder) client).takeitpairs$getClientConfig();
+
+        // Render
+        while (RIDE_ON_SHOULDERS.wasPressed()) {
+            config.setShoulderRideMode(!config.isShoulderRideMode());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
+        }
+
+        // Debug
         while (RIDER_POS_Y_INCREASE.wasPressed()) {
-            var config = ((TakeItPairs$ClientConfigHolder) client).takeitpairs$getClientConfig();
-            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() + Math.abs(config.riderPosYModifier()), config.riderPosYModifier(), config.riderPosZ(), config.riderPosZModifier(), config.rideOnShoulders()));
+            config.setRiderPosY(config.getRiderPosY() + config.getRiderPosYModifier());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
         }
         while (RIDER_POS_Y_DECREASE.wasPressed()) {
-            var config = ((TakeItPairs$ClientConfigHolder) client).takeitpairs$getClientConfig();
-            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$setClientConfig(new ClientConfig(config.riderPosY() - Math.abs(config.riderPosYModifier()), config.riderPosYModifier(), config.riderPosZ(), config.riderPosZModifier(), config.rideOnShoulders()));
+            config.setRiderPosY(config.getRiderPosY() - config.getRiderPosYModifier());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
         }
-        // TODO need to change ClientConfig Class from record to normal class for reduce cost
-//        while (RIDER_POS_Z_INCREASE)
+        while (RIDER_POS_Z_INCREASE.wasPressed()) {
+            config.setRiderPosZ(config.getRiderPosZ() + config.getRiderPosZModifier());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
+        }
+        while (RIDER_POS_Z_DECREASE.wasPressed()) {
+            config.setRiderPosZ(config.getRiderPosZ() - config.getRiderPosZModifier());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
+        }
     }
 }

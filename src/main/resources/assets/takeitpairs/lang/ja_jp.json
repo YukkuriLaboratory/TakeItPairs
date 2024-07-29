@@ -5,5 +5,6 @@
     "option.takeitpairs.render.riderposy.modifier": "乗っているプレイヤーのY座標の変化量(キー用)",
     "key.takeitpairs.category.general": "TakeItPairsの全般設定",
     "key.takeitpairs.riderposy.increase": "乗っているプレイヤーのY座標を上げる",
-    "key.takeitpairs.riderposy.lower": "乗っているプレイヤーのY座標を下げる"
+    "key.takeitpairs.riderposy.lower": "乗っているプレイヤーのY座標を下げる",
+    "option.takeitpairs.render.ride_on_shoulders": "肩に乗る"
 }

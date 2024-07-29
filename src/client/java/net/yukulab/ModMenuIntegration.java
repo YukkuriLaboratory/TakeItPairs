@@ -1,6 +1,5 @@
 package net.yukulab;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -11,75 +10,65 @@ import net.minecraft.text.Text;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import net.yukulab.config.ClientConfig;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
-            // Load configurations
+            // === Load Config ===
             ClientConfig clientConfig = ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig();
-            ClientConfig defaultClientConfig = ClientConfig.asDefault();
+            ClientConfig defaultClientConfig = ClientConfig.getDefaultConfig();
 
-            // Setup config menu
+            // === Menu ===
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
                     .setTitle(Text.translatable("title.takeitpairs.config"));
-
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            // Render category
+            // Render Category
             ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.render"));
 
-            AtomicBoolean rideOnShoulders = new AtomicBoolean(clientConfig.rideOnShoulders());
             renderCategory.addEntry(entryBuilder
-                    .startBooleanToggle(Text.translatable("option.takeitpairs.render.rideonshoulders"), rideOnShoulders.get())
-                    .setDefaultValue(defaultClientConfig.rideOnShoulders())
-                    .setSaveConsumer(rideOnShoulders::set)
+                    .startBooleanToggle(Text.translatable("option.takeitpairs.render.ride_on_shoulders"), clientConfig.isShoulderRideMode())
+                    .setDefaultValue(defaultClientConfig.isShoulderRideMode())
+                    .setSaveConsumer(clientConfig::setShoulderRideMode)
                     .build()
             );
 
-            AtomicDouble riderPosY = new AtomicDouble(clientConfig.riderPosY());
-            renderCategory.addEntry(entryBuilder
-                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy"), riderPosY.get())
-                    .setDefaultValue(defaultClientConfig.riderPosY())
-                    .setSaveConsumer(riderPosY::set)
+            // Debug Category
+            ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.debug"));
+
+            // Rider Pos Y
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.y"), clientConfig.getRiderPosY())
+                    .setDefaultValue(defaultClientConfig.getRiderPosY())
+                    .setSaveConsumer(clientConfig::setRiderPosY)
+                    .build()
+            );
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.y.modifier"), clientConfig.getRiderPosYModifier())
+                    .setDefaultValue(defaultClientConfig.getRiderPosYModifier())
+                    .setSaveConsumer(clientConfig::setRiderPosYModifier)
                     .build()
             );
 
-            AtomicDouble riderPosYModifier = new AtomicDouble(clientConfig.riderPosYModifier());
-            renderCategory.addEntry(entryBuilder
-                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy.modifier"), riderPosYModifier.get())
-                    .setDefaultValue(defaultClientConfig.riderPosYModifier())
-                    .setSaveConsumer(riderPosYModifier::set)
+            // Rider Pos Z
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.z"), clientConfig.getRiderPosZ())
+                    .setDefaultValue(defaultClientConfig.getRiderPosZ())
+                    .setSaveConsumer(clientConfig::setRiderPosZ)
+                    .build()
+            );
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.z.modifier"), clientConfig.getRiderPosZModifier())
+                    .setDefaultValue(defaultClientConfig.getRiderPosZModifier())
+                    .setSaveConsumer(clientConfig::setRiderPosZModifier)
                     .build()
             );
 
-            AtomicDouble riderPosZ = new AtomicDouble(clientConfig.riderPosZ());
-            renderCategory.addEntry(entryBuilder
-                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposz"), riderPosY.get())
-                    .setDefaultValue(defaultClientConfig.riderPosZ())
-                    .setSaveConsumer(riderPosZ::set)
-                    .build()
-            );
 
-            AtomicDouble riderPosZModifier = new AtomicDouble(clientConfig.riderPosZModifier());
-            renderCategory.addEntry(entryBuilder
-                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposz.modifier"), riderPosYModifier.get())
-                    .setDefaultValue(defaultClientConfig.riderPosZModifier())
-                    .setSaveConsumer(riderPosZModifier::set)
-                    .build()
-            );
-
-            // Save configuration
+            // === Save Config ===
             builder.setSavingRunnable(() -> {
-                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$setClientConfig(new ClientConfig(
-                        riderPosY.get(),
-                        riderPosYModifier.get(),
-                        riderPosZ.get(),
-                        riderPosZModifier.get(),
-                        rideOnShoulders.get()
-                ));
+                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$updateClientConfig();
             });
 
             return builder.build();

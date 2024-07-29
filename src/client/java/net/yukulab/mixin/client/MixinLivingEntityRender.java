@@ -21,13 +21,32 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
             method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;animateModel(Lnet/minecraft/entity/Entity;FFF)V")
     )
-    public void changeRiderPos(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
-        double riderPosY = -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().riderPosY();
+    public void renderPlayer(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+//        double riderPosY = -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().riderPosY();
+        double riderPosY = 0.325;
+        // TODO change to constant variable
+        double riderPosZ = -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().riderPosY();
+
+        // === Change rider pos from config value ===
+        // render other player
         if(livingEntity instanceof OtherClientPlayerEntity otherClientPlayerEntity && otherClientPlayerEntity.hasVehicle()) {
-            matrixStack.translate(0, riderPosY,0);
+            matrixStack.translate(0, riderPosY,riderPosZ);
         }
+
+        // render self
         if(livingEntity instanceof ClientPlayerEntity clientPlayerEntity && clientPlayerEntity.hasVehicle() && clientPlayerEntity.getVehicle() instanceof OtherClientPlayerEntity) {
-            matrixStack.translate(0, riderPosY, 0);
+            matrixStack.translate(0, riderPosY, riderPosZ);
         }
+
+//        // === Change rider pos from config value ===
+//        // render other player
+//        if(livingEntity instanceof OtherClientPlayerEntity otherClientPlayerEntity && otherClientPlayerEntity.hasVehicle()) {
+//            matrixStack.translate(0, riderPosY,0);
+//        }
+//
+//        // render self
+//        if(livingEntity instanceof ClientPlayerEntity clientPlayerEntity && clientPlayerEntity.hasVehicle() && clientPlayerEntity.getVehicle() instanceof OtherClientPlayerEntity) {
+//            matrixStack.translate(0, riderPosY, 0);
+//        }
     }
 }

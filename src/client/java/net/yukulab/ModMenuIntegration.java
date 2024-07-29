@@ -25,7 +25,7 @@ public class ModMenuIntegration implements ModMenuApi {
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
             // Render Category
-            ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.render"));
+            ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.render"));
 
             renderCategory.addEntry(entryBuilder
                     .startBooleanToggle(Text.translatable("option.takeitpairs.render.ride_on_shoulders"), clientConfig.isShoulderRideMode())
@@ -35,7 +35,7 @@ public class ModMenuIntegration implements ModMenuApi {
             );
 
             // Debug Category
-            ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.debug"));
+            ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.debug"));
 
             // Rider Pos Y
             debugCategory.addEntry(entryBuilder

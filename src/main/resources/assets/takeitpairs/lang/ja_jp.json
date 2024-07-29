@@ -1,10 +1,17 @@
 {
     "title.takeitpairs.config": "TakeItPairsの設定",
-    "category.takeitpairs.render": "レンダリング",
-    "option.takeitpairs.render.riderposy": "乗っているプレイヤーのY座標",
-    "option.takeitpairs.render.riderposy.modifier": "乗っているプレイヤーのY座標の変化量(キー用)",
-    "key.takeitpairs.category.general": "TakeItPairsの全般設定",
-    "key.takeitpairs.riderposy.increase": "乗っているプレイヤーのY座標を上げる",
-    "key.takeitpairs.riderposy.lower": "乗っているプレイヤーのY座標を下げる",
-    "option.takeitpairs.render.ride_on_shoulders": "肩に乗る"
+    "option.category.takeitpairs.render": "レンダリング",
+    "option.takeitpairs.render.ride_on_shoulders": "肩車モード",
+    "option.category.takeitpairs.debug": "Debug",
+    "option.takeitpairs.debug.riderpos.y": "乗っているプレイヤーのY座標",
+    "option.takeitpairs.debug.riderpos.y.modifier": "乗っているプレイヤーのY座標の変化量(キー用)",
+    "option.takeitpairs.debug.riderpos.z": "乗っているプレイヤーのZ座標",
+    "option.takeitpairs.debug.riderpos.z.modifier": "乗っているプレイヤーのZ座標の変化量(キー用)",
+    "key.takeitpairs.category.render": "TakeItPairs - レンダリング",
+    "key.takeitpairs.riderpos.ride_on_shoulders": "肩車モードの切り替え",
+    "key.takeitpairs.category.debug": "TakeItPairs - デバッグ",
+    "key.takeitpairs.riderpos.y.increase": "乗っているプレイヤーのY座標を上げる",
+    "key.takeitpairs.riderpos.y.decrease": "乗っているプレイヤーのY座標を下げる",
+    "key.takeitpairs.riderpos.z.increase": "乗っているプレイヤーのZ座標を上げる",
+    "key.takeitpairs.riderpos.z.decrease": "乗っているプレイヤーのZ座標を下げる"
 }

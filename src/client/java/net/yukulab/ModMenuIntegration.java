@@ -11,6 +11,8 @@ import net.minecraft.text.Text;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import net.yukulab.config.ClientConfig;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
@@ -29,10 +31,18 @@ public class ModMenuIntegration implements ModMenuApi {
             // Render category
             ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.render"));
 
+            AtomicBoolean rideOnShoulders = new AtomicBoolean(clientConfig.rideOnShoulders());
+            renderCategory.addEntry(entryBuilder
+                    .startBooleanToggle(Text.translatable("option.takeitpairs.render.rideonshoulders"), rideOnShoulders.get())
+                    .setDefaultValue(defaultClientConfig.rideOnShoulders())
+                    .setSaveConsumer(rideOnShoulders::set)
+                    .build()
+            );
+
             AtomicDouble riderPosY = new AtomicDouble(clientConfig.riderPosY());
             renderCategory.addEntry(entryBuilder
-                            .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy"), riderPosY.get())
-                            .setDefaultValue(defaultClientConfig.riderPosY())
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy"), riderPosY.get())
+                    .setDefaultValue(defaultClientConfig.riderPosY())
                     .setSaveConsumer(riderPosY::set)
                     .build()
             );
@@ -45,9 +55,31 @@ public class ModMenuIntegration implements ModMenuApi {
                     .build()
             );
 
+            AtomicDouble riderPosZ = new AtomicDouble(clientConfig.riderPosZ());
+            renderCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposz"), riderPosY.get())
+                    .setDefaultValue(defaultClientConfig.riderPosZ())
+                    .setSaveConsumer(riderPosZ::set)
+                    .build()
+            );
+
+            AtomicDouble riderPosZModifier = new AtomicDouble(clientConfig.riderPosZModifier());
+            renderCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposz.modifier"), riderPosYModifier.get())
+                    .setDefaultValue(defaultClientConfig.riderPosZModifier())
+                    .setSaveConsumer(riderPosZModifier::set)
+                    .build()
+            );
+
             // Save configuration
             builder.setSavingRunnable(() -> {
-                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$setClientConfig(new ClientConfig(riderPosY.get(), riderPosYModifier.get()));
+                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$setClientConfig(new ClientConfig(
+                        riderPosY.get(),
+                        riderPosYModifier.get(),
+                        riderPosZ.get(),
+                        riderPosZModifier.get(),
+                        rideOnShoulders.get()
+                ));
             });
 
             return builder.build();

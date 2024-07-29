@@ -30,7 +30,10 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
         // Round double value
         var newConfig = new ClientConfig(
                 MathUtil.floor(3, config.riderPosY()),
-                MathUtil.round(3, config.riderPosYModifier())
+                MathUtil.round(3, config.riderPosYModifier()),
+                MathUtil.floor(3, config.riderPosZ()),
+                MathUtil.round(3, config.riderPosZModifier()),
+                config.rideOnShoulders()
         );
         takeitpairs$clientConfig = newConfig;
         // Save config

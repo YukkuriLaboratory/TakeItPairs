@@ -24,9 +24,10 @@ public class ModMenuIntegration implements ModMenuApi {
                     .setTitle(Text.translatable("title.takeitpairs.config"));
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            // Render Category
+            // === Render Category ===
             ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.render"));
 
+            // Toggle Shoulder ride mode
             renderCategory.addEntry(entryBuilder
                     .startBooleanToggle(Text.translatable("option.takeitpairs.render.ride_on_shoulders"), clientConfig.isShoulderRideMode())
                     .setDefaultValue(defaultClientConfig.isShoulderRideMode())
@@ -34,7 +35,21 @@ public class ModMenuIntegration implements ModMenuApi {
                     .build()
             );
 
-            // Debug Category
+            // Rider pos settings for Shoulder ride mode
+            renderCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.ride_on_shoulders.y"), clientConfig.getShoulderModeRiderY())
+                    .setDefaultValue(defaultClientConfig.getShoulderModeRiderY())
+                    .setSaveConsumer(clientConfig::setShoulderModeRiderY)
+                    .build()
+            );
+            renderCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.ride_on_shoulders.z"), clientConfig.getShoulderModeRiderZ())
+                    .setDefaultValue(defaultClientConfig.getShoulderModeRiderZ())
+                    .setSaveConsumer(clientConfig::setShoulderModeRiderZ)
+                    .build()
+            );
+
+            // === Debug Category ===
             ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.debug"));
 
             // Rider Pos Y

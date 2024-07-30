@@ -6,14 +6,25 @@ import org.jetbrains.annotations.NotNull;
 public class ClientConfig {
     private double riderPosY, riderPosYModifier;
     private double riderPosZ, riderPosZModifier;
+    private double shoulderModeRiderY, shoulderModeRiderZ;
     private boolean shoulderRideMode;
 
-    public ClientConfig(double riderPosY, double riderPosYModifier, double riderPosZ, double riderPosZModifier, boolean shoulderRideMode) {
+    public ClientConfig(
+            double riderPosY,
+            double riderPosYModifier,
+            double riderPosZ,
+            double riderPosZModifier,
+            boolean shoulderRideMode,
+            double shoulderModeRiderY,
+            double shoulderModeRiderZ
+            ) {
         this.riderPosY = riderPosY;
         this.riderPosYModifier = riderPosYModifier;
         this.riderPosZ = riderPosZ;
         this.riderPosZModifier = riderPosZModifier;
         this.shoulderRideMode = shoulderRideMode;
+        this.shoulderModeRiderY = shoulderModeRiderY;
+        this.shoulderModeRiderZ = shoulderModeRiderZ;
     }
 
     public static @NotNull ClientConfig getDefaultConfig() {
@@ -22,7 +33,9 @@ public class ClientConfig {
                 0.1,
                 0.0,
                 0.1,
-                true
+                true,
+                -0.325,
+                -0.5
         );
     }
 
@@ -64,5 +77,21 @@ public class ClientConfig {
 
     public void setShoulderRideMode(boolean hasShoulderRideMode) {
         this.shoulderRideMode = hasShoulderRideMode;
+    }
+
+    public double getShoulderModeRiderY() {
+        return shoulderModeRiderY;
+    }
+
+    public void setShoulderModeRiderY(double shoulderModeRiderY) {
+        this.shoulderModeRiderY = shoulderModeRiderY;
+    }
+
+    public double getShoulderModeRiderZ() {
+        return shoulderModeRiderZ;
+    }
+
+    public void setShoulderModeRiderZ(double shoulderModeRiderZ) {
+        this.shoulderModeRiderZ = shoulderModeRiderZ;
     }
 }

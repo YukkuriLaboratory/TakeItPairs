@@ -25,8 +25,8 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
         ClientConfig config = ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig();
 
         // TODO export these magic number to config
-        double riderPosY = config.isShoulderRideMode() ? 0.325 : -config.getRiderPosY();
-        double riderPosZ = config.isShoulderRideMode() ? 0.5 : -((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig().getRiderPosZ();
+        double riderPosY = -(config.isShoulderRideMode() ? config.getShoulderModeRiderY() : config.getRiderPosY());
+        double riderPosZ = -(config.isShoulderRideMode() ? config.getShoulderModeRiderZ() : config.getRiderPosZ());
 
         // === Change rider pos from config value ===
         // render other player

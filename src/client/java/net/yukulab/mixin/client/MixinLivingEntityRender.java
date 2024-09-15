@@ -24,7 +24,6 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
     public void renderPlayer(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         ClientConfig config = ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig();
 
-        // TODO export these magic number to config
         double riderPosY = -(config.isShoulderRideMode() ? config.getShoulderModeRiderY() : config.getRiderPosY());
         double riderPosZ = -(config.isShoulderRideMode() ? config.getShoulderModeRiderZ() : config.getRiderPosZ());
 

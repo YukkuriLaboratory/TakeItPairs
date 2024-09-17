@@ -1,13 +1,14 @@
 {
-	"required": true,
-	"package": "net.yukulab.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"MixinLivingEntity",
-		"MixinRespawnAnchorBlock",
-		"MixinServerPlayerEntity"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "net.yukulab.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MixinItemStack",
+    "MixinLivingEntity",
+    "MixinRespawnAnchorBlock",
+    "MixinServerPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 public class TakeItPairsClient implements ClientModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("TakeItPairs-Client");
+	public static final double riderPosY = -0.325d;
+
 	@Override
 	public void onInitializeClient() {
 		TakeItPairsKeyBinds.init();

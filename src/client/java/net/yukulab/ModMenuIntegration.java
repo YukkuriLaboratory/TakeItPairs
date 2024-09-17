@@ -1,6 +1,5 @@
 package net.yukulab;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
@@ -15,39 +14,76 @@ public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
-            // Load configurations
+            // === Load Config ===
             ClientConfig clientConfig = ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$getClientConfig();
-            ClientConfig defaultClientConfig = ClientConfig.asDefault();
+            ClientConfig defaultClientConfig = ClientConfig.getDefaultConfig();
 
-            // Setup config menu
+            // === Menu ===
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
                     .setTitle(Text.translatable("title.takeitpairs.config"));
-
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            // Render category
-            ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("category.takeitpairs.render"));
+            // === Render Category ===
+            ConfigCategory renderCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.render"));
 
-            AtomicDouble riderPosY = new AtomicDouble(clientConfig.riderPosY());
+            // Toggle Shoulder ride mode
             renderCategory.addEntry(entryBuilder
-                            .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy"), riderPosY.get())
-                            .setDefaultValue(defaultClientConfig.riderPosY())
-                    .setSaveConsumer(riderPosY::set)
+                    .startBooleanToggle(Text.translatable("option.takeitpairs.render.ride_on_shoulders"), clientConfig.isShoulderRideMode())
+                    .setDefaultValue(defaultClientConfig.isShoulderRideMode())
+                    .setSaveConsumer(clientConfig::setShoulderRideMode)
                     .build()
             );
 
-            AtomicDouble riderPosYModifier = new AtomicDouble(clientConfig.riderPosYModifier());
+            // Rider pos settings for Shoulder ride mode
             renderCategory.addEntry(entryBuilder
-                    .startDoubleField(Text.translatable("option.takeitpairs.render.riderposy.modifier"), riderPosYModifier.get())
-                    .setDefaultValue(defaultClientConfig.riderPosYModifier())
-                    .setSaveConsumer(riderPosYModifier::set)
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.ride_on_shoulders.y"), clientConfig.getShoulderModeRiderY())
+                    .setDefaultValue(defaultClientConfig.getShoulderModeRiderY())
+                    .setSaveConsumer(clientConfig::setShoulderModeRiderY)
+                    .build()
+            );
+            renderCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.render.ride_on_shoulders.z"), clientConfig.getShoulderModeRiderZ())
+                    .setDefaultValue(defaultClientConfig.getShoulderModeRiderZ())
+                    .setSaveConsumer(clientConfig::setShoulderModeRiderZ)
                     .build()
             );
 
-            // Save configuration
+            // === Debug Category ===
+            ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.debug"));
+
+            // Rider Pos Y
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.y"), clientConfig.getRiderPosY())
+                    .setDefaultValue(defaultClientConfig.getRiderPosY())
+                    .setSaveConsumer(clientConfig::setRiderPosY)
+                    .build()
+            );
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.y.modifier"), clientConfig.getRiderPosYModifier())
+                    .setDefaultValue(defaultClientConfig.getRiderPosYModifier())
+                    .setSaveConsumer(clientConfig::setRiderPosYModifier)
+                    .build()
+            );
+
+            // Rider Pos Z
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.z"), clientConfig.getRiderPosZ())
+                    .setDefaultValue(defaultClientConfig.getRiderPosZ())
+                    .setSaveConsumer(clientConfig::setRiderPosZ)
+                    .build()
+            );
+            debugCategory.addEntry(entryBuilder
+                    .startDoubleField(Text.translatable("option.takeitpairs.debug.riderpos.z.modifier"), clientConfig.getRiderPosZModifier())
+                    .setDefaultValue(defaultClientConfig.getRiderPosZModifier())
+                    .setSaveConsumer(clientConfig::setRiderPosZModifier)
+                    .build()
+            );
+
+
+            // === Save Config ===
             builder.setSavingRunnable(() -> {
-                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$setClientConfig(new ClientConfig(riderPosY.get(), riderPosYModifier.get()));
+                ((TakeItPairs$ClientConfigHolder) MinecraftClient.getInstance()).takeitpairs$updateClientConfig();
             });
 
             return builder.build();

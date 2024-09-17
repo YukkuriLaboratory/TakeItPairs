@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.yukulab.extension.TakeIrPairs$ForceSpawnConsumptionEffects;
 import net.yukulab.extension.TakeItPairs$Feeding;
@@ -201,5 +202,52 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
         var timeDiff = maxUseTime - takeitpairs$feedingTimeLeft;
         int min = (int) (maxUseTime * 0.21785f);
         return timeDiff > min && takeitpairs$feedingTimeLeft % 2 == 0;
+    }
+
+//    @Override
+//    protected void updatePassengerPosition(Entity passenger, PositionUpdater positionUpdater) {
+//        super.updatePassengerPosition(passenger, positionUpdater);
+//        if (passenger instanceof PlayerEntity playerEntity) {
+////            takeitpairs$clampPassengerYaw(passenger);\
+//            LogUtils.getLogger().info("Fired with {}", playerEntity.getName());
+//            passenger.setYaw(getYaw());
+//            passenger.setBodyYaw(getBodyYaw());
+//            passenger.setHeadYaw(getHeadYaw());
+//        }
+//    }
+
+//    @Unique
+//    protected void takeitpairs$clampPassengerYaw(Entity passenger) {
+//        passenger.setBodyYaw(getBodyYaw());
+//        float f = MathHelper.wrapDegrees(passenger.getYaw() - this.getYaw());
+//        float g = MathHelper.clamp(f, -90.0F, 90.0F);
+////        passenger.prevYaw += g - f;
+//        passenger.setYaw(getYaw());
+//        passenger.setHeadYaw(passenger.getYaw() + g - f);
+//    }
+
+    @Override
+    protected void updatePassengerPosition(Entity passenger, Entity.PositionUpdater positionUpdater) {
+        super.updatePassengerPosition(passenger, positionUpdater);
+        if (passenger instanceof PlayerEntity) {
+            LogUtils.getLogger().info("before yaw:{}, head:{}, body:{}", passenger.getYaw(), passenger.getHeadYaw(), passenger.getBodyYaw());
+            this.clampPassengerYaw(passenger);
+            LogUtils.getLogger().info("after yaw:{}, head:{}, body:{}", passenger.getYaw(), passenger.getHeadYaw(), passenger.getBodyYaw());
+        }
+    }
+
+    protected void clampPassengerYaw(Entity passenger) {
+        passenger.setBodyYaw(this.getYaw());
+        float f = passenger.getYaw() - this.getYaw();
+        float g = MathHelper.clamp(f, -90.0F, 90.0F);
+        passenger.prevYaw = passenger.getYaw();
+        //    passenger.setYaw(passenger.getYaw() + g - f);
+        passenger.setYaw(g);
+        passenger.setHeadYaw(g);
+    }
+
+    @Override
+    public void onPassengerLookAround(Entity passenger) {
+        this.clampPassengerYaw(passenger);
     }
 }

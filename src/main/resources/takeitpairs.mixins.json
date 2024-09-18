@@ -3,8 +3,11 @@
   "package": "net.yukulab.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "MixinActiveTargetGoal",
     "MixinItemStack",
     "MixinLivingEntity",
+    "MixinLookAtEntityGoal",
+    "MixinNearestPlayersSensor",
     "MixinRespawnAnchorBlock",
     "MixinServerPlayerEntity"
   ],

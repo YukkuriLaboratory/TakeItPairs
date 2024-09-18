@@ -10,8 +10,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.UseAction;
@@ -20,6 +22,7 @@ import net.minecraft.world.World;
 import net.yukulab.extension.TakeIrPairs$ForceSpawnConsumptionEffects;
 import net.yukulab.extension.TakeItPairs$Feeding;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -35,6 +38,10 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
 
     @Shadow
     public abstract ServerWorld getServerWorld();
+
+    @Shadow
+    @Final
+    public MinecraftServer server;
 
     protected MixinServerPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -62,7 +69,7 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
                 }
                 return ActionResult.SUCCESS;
             }
-            if(handItem.getUseAction() == UseAction.DRINK) {
+            if (handItem.getUseAction() == UseAction.DRINK) {
                 if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
                     LogUtils.getLogger().debug("[TIP] Fired potionComponent");
                     takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);
@@ -170,6 +177,14 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
             }
             takeitpairs$resetFeedingTarget();
         }
+    }
+
+    @Inject(
+            method = "sleep",
+            at = @At("HEAD")
+    )
+    private void resetAllPlayerRestStat(BlockPos pos, CallbackInfo ci) {
+        server.getPlayerManager().getPlayerList().forEach((player) -> player.resetStat(Stats.CUSTOM.getOrCreateStat(Stats.TIME_SINCE_REST)));
     }
 
     @Unique

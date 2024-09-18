@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "MixinActiveTargetGoal",
+    "MixinEntity",
     "MixinItemStack",
     "MixinLivingEntity",
     "MixinLookAtEntityGoal",

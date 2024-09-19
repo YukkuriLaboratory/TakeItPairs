@@ -8,6 +8,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +25,9 @@ public abstract class MixinPlayerEntityRender extends LivingEntityRenderer<Abstr
             at = @At("RETURN")
     )
     private void invisibleLegWhenRiding(AbstractClientPlayerEntity player, CallbackInfo ci) {
-        if(MinecraftClient.getInstance().options.getPerspective() == Perspective.FIRST_PERSON && player.getVehicle() instanceof ClientPlayerEntity) {
+        if(MinecraftClient.getInstance().options.getPerspective() == Perspective.FIRST_PERSON
+                && player.getVehicle() instanceof ClientPlayerEntity
+                && ((TakeItPairs$ClientConfigHolder)MinecraftClient.getInstance()).takeitpairs$getClientConfig().getInvisibleRiderOnRideMode()) {
             getModel().setVisible(false);
         }
     }

@@ -7,7 +7,8 @@ public class ClientConfig {
     private double riderPosY, riderPosYModifier;
     private double riderPosZ, riderPosZModifier;
     private double shoulderModeRiderY, shoulderModeRiderZ;
-    private boolean shoulderRideMode;
+
+    private boolean shoulderRideMode, invisibleRiderOnRideMode;
 
     public ClientConfig(
             double riderPosY,
@@ -16,7 +17,8 @@ public class ClientConfig {
             double riderPosZModifier,
             boolean shoulderRideMode,
             double shoulderModeRiderY,
-            double shoulderModeRiderZ
+            double shoulderModeRiderZ,
+            boolean invisibleRiderOnRideMode
             ) {
         this.riderPosY = riderPosY;
         this.riderPosYModifier = riderPosYModifier;
@@ -25,6 +27,7 @@ public class ClientConfig {
         this.shoulderRideMode = shoulderRideMode;
         this.shoulderModeRiderY = shoulderModeRiderY;
         this.shoulderModeRiderZ = shoulderModeRiderZ;
+        this.invisibleRiderOnRideMode = invisibleRiderOnRideMode;
     }
 
     public static @NotNull ClientConfig getDefaultConfig() {
@@ -35,7 +38,8 @@ public class ClientConfig {
                 0.1,
                 true,
                 -0.325,
-                -0.5
+                -0.5,
+                true
         );
     }
 
@@ -93,5 +97,13 @@ public class ClientConfig {
 
     public void setShoulderModeRiderZ(double shoulderModeRiderZ) {
         this.shoulderModeRiderZ = shoulderModeRiderZ;
+    }
+
+    public boolean getInvisibleRiderOnRideMode() {
+        return invisibleRiderOnRideMode;
+    }
+
+    public void setInvisibleRiderOnRideMode(boolean invisibleRiderOnRideMode) {
+        this.invisibleRiderOnRideMode = invisibleRiderOnRideMode;
     }
 }

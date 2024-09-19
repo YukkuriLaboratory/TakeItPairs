@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHolder {
-    @Shadow @Nullable public Entity cameraEntity;
-    @Shadow @Nullable public ClientPlayerEntity player;
     @Unique
     private final ClientConfig takeitpairs$clientConfig = ConfigIO.readConfigOrDefault(ClientConfig.class, ClientConfig.getDefaultConfig());
 
@@ -31,26 +29,5 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
     @Override
     public void takeitpairs$updateClientConfig() {
         ConfigIO.writeConfig(takeitpairs$clientConfig);
-    }
-
-    @Inject(
-            method = "tick",
-            at = @At("RETURN")
-    )
-    private void onTick(CallbackInfo ci) {
-        if(player == null) return;
-        if(player.getVehicle() instanceof OtherClientPlayerEntity clientPlayer) {
-            if(cameraEntity == null) return;
-//            cameraEntity.setYaw(clientPlayer.getYaw());
-//            cameraEntity.setBodyYaw(clientPlayer.getBodyYaw());
-//            cameraEntity.setHeadYaw(clientPlayer.getHeadYaw());
-//            player.setYaw(clientPlayer.getYaw());
-//            player.setBodyYaw(clientPlayer.getBodyYaw());
-//            player.setHeadYaw(clientPlayer.getHeadYaw());
-//            LogUtils.getLogger().info("Camera Entity head yaw was synced!");
-        }
-//        if(player.getFirstPassenger() instanceof OtherClientPlayerEntity clientPlayer) {
-//            if(cameraEntity == null) return;
-//        }
     }
 }

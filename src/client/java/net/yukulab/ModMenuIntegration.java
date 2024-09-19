@@ -49,6 +49,14 @@ public class ModMenuIntegration implements ModMenuApi {
                     .build()
             );
 
+            // Invisible Rider when ride mode
+            renderCategory.addEntry(entryBuilder
+                    .startBooleanToggle(Text.translatable("option.takeitpairs.render.ride_on_shoulders.leg_invisible"), clientConfig.getInvisibleRiderOnRideMode())
+                    .setDefaultValue(defaultClientConfig.getInvisibleRiderOnRideMode())
+                    .setSaveConsumer(clientConfig::setInvisibleRiderOnRideMode)
+                    .build()
+            );
+
             // === Debug Category ===
             ConfigCategory debugCategory = builder.getOrCreateCategory(Text.translatable("option.category.takeitpairs.debug"));
 

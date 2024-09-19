@@ -4,6 +4,7 @@
     "option.takeitpairs.render.ride_on_shoulders": "肩車モード",
     "option.takeitpairs.render.ride_on_shoulders.y": "肩車モード - 乗っているプレイヤーのX",
     "option.takeitpairs.render.ride_on_shoulders.z": "肩車モード - 乗っているプレイヤーのZ",
+    "option.takeitpairs.render.ride_on_shoulders.leg_invisible": "肩車モード - 乗っているプレイヤーを見えなくする",
     "option.category.takeitpairs.debug": "Debug",
     "option.takeitpairs.debug.riderpos.y": "乗っているプレイヤーのY座標",
     "option.takeitpairs.debug.riderpos.y.modifier": "乗っているプレイヤーのY座標の変化量(キー用)",

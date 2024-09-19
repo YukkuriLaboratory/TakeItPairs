@@ -69,7 +69,7 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
                 }
                 return ActionResult.SUCCESS;
             }
-            if (handItem.getUseAction() == UseAction.DRINK) {
+            if(handItem.getUseAction() == UseAction.DRINK) {
                 if (player instanceof TakeItPairs$Feeding takeItPairs$feeding) {
                     LogUtils.getLogger().debug("[TIP] Fired potionComponent");
                     takeItPairs$feeding.takeitpairs$startFeeding(entity, handItem, targetHand);

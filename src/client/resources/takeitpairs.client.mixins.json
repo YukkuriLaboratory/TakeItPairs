@@ -1,13 +1,15 @@
 {
-    "required": true,
-    "package": "net.yukulab.mixin.client",
-    "compatibilityLevel": "JAVA_21",
-    "client": [
-        "MixinClientPlayerInteractionManager",
-        "MixinLivingEntityRender",
-        "MixinMinecraftClient"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+  "required": true,
+  "package": "net.yukulab.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "MixinArmorFeatureRenderer",
+    "MixinClientPlayerInteractionManager",
+    "MixinLivingEntityRender",
+    "MixinMinecraftClient",
+    "MixinPlayerEntityRender"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

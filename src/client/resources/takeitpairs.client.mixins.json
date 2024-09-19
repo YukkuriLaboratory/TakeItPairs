@@ -3,6 +3,7 @@
   "package": "net.yukulab.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "MixinArmorFeatureRenderer",
     "MixinClientPlayerInteractionManager",
     "MixinLivingEntityRender",
     "MixinMinecraftClient",

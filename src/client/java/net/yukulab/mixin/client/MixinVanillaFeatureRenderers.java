@@ -20,6 +20,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         HeadFeatureRenderer.class,
         HeldItemFeatureRenderer.class,
         HeadFeatureRenderer.class,
+        TridentRiptideFeatureRenderer.class,
+        ShoulderParrotFeatureRenderer.class,
+        Deadmau5FeatureRenderer.class,
 })
 public abstract class MixinVanillaFeatureRenderers<T extends Entity> {
     @Inject(

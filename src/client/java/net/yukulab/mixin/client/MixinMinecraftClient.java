@@ -43,10 +43,10 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
             if(cameraEntity == null) return;
 //            cameraEntity.setYaw(clientPlayer.getYaw());
 //            cameraEntity.setBodyYaw(clientPlayer.getBodyYaw());
-            cameraEntity.setHeadYaw(clientPlayer.getHeadYaw());
+//            cameraEntity.setHeadYaw(clientPlayer.getHeadYaw());
 //            player.setYaw(clientPlayer.getYaw());
 //            player.setBodyYaw(clientPlayer.getBodyYaw());
-            player.setHeadYaw(clientPlayer.getHeadYaw());
+//            player.setHeadYaw(clientPlayer.getHeadYaw());
 //            LogUtils.getLogger().info("Camera Entity head yaw was synced!");
         }
 //        if(player.getFirstPassenger() instanceof OtherClientPlayerEntity clientPlayer) {

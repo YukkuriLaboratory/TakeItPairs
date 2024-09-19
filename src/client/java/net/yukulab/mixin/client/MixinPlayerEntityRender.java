@@ -4,10 +4,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.Perspective;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.client.util.math.MatrixStack;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,14 +23,15 @@ public abstract class MixinPlayerEntityRender extends LivingEntityRenderer<Abstr
     }
 
     @Inject(
-            method = "setModelPose",
-            at = @At("RETURN")
+            method = "render(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
+            at = @At("HEAD"),
+            cancellable = true
     )
-    private void invisibleLegWhenRiding(AbstractClientPlayerEntity player, CallbackInfo ci) {
+    private void makePlayerInvisible(AbstractClientPlayerEntity abstractClientPlayerEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if(MinecraftClient.getInstance().options.getPerspective() == Perspective.FIRST_PERSON
-                && player.getVehicle() instanceof ClientPlayerEntity
+                && abstractClientPlayerEntity.getVehicle() instanceof ClientPlayerEntity
                 && ((TakeItPairs$ClientConfigHolder)MinecraftClient.getInstance()).takeitpairs$getClientConfig().getInvisibleRiderOnRideMode()) {
-            getModel().setVisible(false);
+            ci.cancel();
         }
     }
 }

@@ -3,13 +3,10 @@
   "package": "net.yukulab.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "MixinCapeFeatureRenderer",
     "MixinClientPlayerInteractionManager",
     "MixinLivingEntityRender",
     "MixinMinecraftClient",
-    "MixinPlayerEntityRender",
-    "MixinStuckObjectsFeatureRenderer",
-    "MixinVanillaFeatureRenderers"
+    "MixinPlayerEntityRender"
   ],
   "injectors": {
     "defaultRequire": 1

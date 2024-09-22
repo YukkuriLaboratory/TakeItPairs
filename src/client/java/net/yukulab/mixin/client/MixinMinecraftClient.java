@@ -2,12 +2,13 @@ package net.yukulab.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.yukulab.PlayerRole;
+import net.minecraft.client.option.GameOptions;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import net.yukulab.config.ClientConfig;
 import net.yukulab.config.ConfigIO;
-import net.yukulab.extension.TakeItPairs$RoleHolder;
+import net.yukulab.extension.TakeItPairs$StateHolder;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,6 +25,9 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
     @Shadow
     protected abstract void handleBlockBreaking(boolean breaking);
 
+    @Shadow
+    @Final
+    public GameOptions options;
     @Unique
     private final ClientConfig takeitpairs$clientConfig = ConfigIO.readConfigOrDefault(ClientConfig.class, ClientConfig.getDefaultConfig());
 
@@ -37,6 +41,7 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
         ConfigIO.writeConfig(takeitpairs$clientConfig);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Inject(
             method = "handleInputEvents",
             at = @At(
@@ -46,7 +51,15 @@ public abstract class MixinMinecraftClient implements TakeItPairs$ClientConfigHo
             cancellable = true
     )
     private void ignoreIfPlayerIsCarrier(CallbackInfo ci) {
-        if (player instanceof TakeItPairs$RoleHolder holder && holder.takeitpairs$getRole() == PlayerRole.CARRIER) {
+        if (player instanceof TakeItPairs$StateHolder holder && holder.takeitpairs$isClickDisabled()) {
+            while (this.options.attackKey.wasPressed()) {
+            }
+
+            while (this.options.useKey.wasPressed()) {
+            }
+
+            while (this.options.pickItemKey.wasPressed()) {
+            }
             handleBlockBreaking(false);
             ci.cancel();
         }

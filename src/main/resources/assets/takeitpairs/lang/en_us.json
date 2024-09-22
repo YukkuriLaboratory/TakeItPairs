@@ -13,8 +13,15 @@
     "key.takeitpairs.category.render": "TakeItPairs - Render",
     "key.takeitpairs.riderpos.ride_on_shoulders": "Ride on shoulders Mode On/Off",
     "key.takeitpairs.category.debug": "TakeItPairs - Debug",
+    "key.takeitpairs.category.disable": "TakeItPairs - Disable",
     "key.takeitpairs.riderpos.y.increase": "Increase Rider's pos Y",
     "key.takeitpairs.riderpos.y.decrease": "Decrease Rider's pos Y",
     "key.takeitpairs.riderpos.z.increase": "Increase Rider's pos Z",
-    "key.takeitpairs.riderpos.z.decrease": "Decrease Rider's pos Z"
+    "key.takeitpairs.riderpos.z.decrease": "Decrease Rider's pos Z",
+    "key.takeitpairs.disable.movement": "Movement",
+    "key.takeitpairs.disable.click": "Mouse Click",
+    "notify.takeitpairs.disable.movement": "Movement Disabled",
+    "notify.takeitpairs.enable.movement": "Movement Eisabled",
+    "notify.takeitpairs.disable.click": "Mouse Click Disabled",
+    "notify.takeitpairs.enable.click": "Mouse Click Enabled"
 }

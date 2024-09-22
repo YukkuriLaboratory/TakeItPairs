@@ -8,9 +8,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
-import net.yukulab.PlayerRole;
-import net.yukulab.extension.TakeItPairs$RoleHolder;
-import org.jetbrains.annotations.Nullable;
+import net.yukulab.extension.TakeItPairs$StateHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,12 +16,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.OptionalInt;
-
 @Mixin(PlayerEntity.class)
-abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPairs$RoleHolder {
+abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPairs$StateHolder {
     @Unique
-    private static TrackedData<OptionalInt> TAKEITPAIRS_PLAYER_ROLE = null;
+    private static TrackedData<Boolean> TAKEITPAIRS_DISABLE_MOVEMENT = null;
+    @Unique
+    private static TrackedData<Boolean> TAKEITPAIRS_DISABLE_CLICK = null;
 
     protected MixinPlayerEntity(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -34,7 +32,8 @@ abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPa
             at = @At("RETURN")
     )
     private static void registerPlayerRoleData(CallbackInfo ci) {
-        TAKEITPAIRS_PLAYER_ROLE = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.OPTIONAL_INT);
+        TAKEITPAIRS_DISABLE_MOVEMENT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+        TAKEITPAIRS_DISABLE_CLICK = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 
     @Inject(
@@ -42,7 +41,8 @@ abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPa
             at = @At("RETURN")
     )
     private void initDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
-        builder.add(TAKEITPAIRS_PLAYER_ROLE, OptionalInt.empty());
+        builder.add(TAKEITPAIRS_DISABLE_MOVEMENT, false);
+        builder.add(TAKEITPAIRS_DISABLE_CLICK, false);
     }
 
     @Inject(
@@ -50,8 +50,11 @@ abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPa
             at = @At("RETURN")
     )
     private void readPlayerRole(NbtCompound nbt, CallbackInfo ci) {
-        if (nbt.contains("TakeItPairsPlayerRole")) {
-            this.takeitpairs$setRole(PlayerRole.values()[nbt.getInt("TakeItPairsPlayerRole")]);
+        if (nbt.contains("TakeItPairsDisableMovement")) {
+            this.takeitpairs$disableMovement(nbt.getBoolean("TakeItPairsDisableMovement"));
+        }
+        if (nbt.contains("TakeItPairsDisableClick")) {
+            this.takeitpairs$disableClick(nbt.getBoolean("TakeItPairsDisableClick"));
         }
     }
 
@@ -60,21 +63,28 @@ abstract public class MixinPlayerEntity extends LivingEntity implements TakeItPa
             at = @At("RETURN")
     )
     private void writePlayerRole(NbtCompound nbt, CallbackInfo ci) {
-        var role = this.takeitpairs$getRole();
-        if (role != null) {
-            nbt.putInt("TakeItPairsPlayerRole", role.ordinal());
-        }
-    }
-
-    @Nullable
-    @Override
-    public PlayerRole takeitpairs$getRole() {
-        return this.dataTracker.get(TAKEITPAIRS_PLAYER_ROLE).isPresent() ? PlayerRole.values()[this.dataTracker.get(TAKEITPAIRS_PLAYER_ROLE).getAsInt()] : null;
+        nbt.putBoolean("TakeItPairsDisableMovement", this.takeitpairs$isMovementDisabled());
+        nbt.putBoolean("TakeItPairsDisableClick", this.takeitpairs$isClickDisabled());
     }
 
     @Override
-    public void takeitpairs$setRole(@Nullable PlayerRole role) {
-        this.dataTracker.set(TAKEITPAIRS_PLAYER_ROLE, role == null ? OptionalInt.empty() : OptionalInt.of(role.ordinal()));
+    public void takeitpairs$disableMovement(boolean disable) {
+        this.dataTracker.set(TAKEITPAIRS_DISABLE_MOVEMENT, disable);
+    }
+
+    @Override
+    public boolean takeitpairs$isMovementDisabled() {
+        return this.dataTracker.get(TAKEITPAIRS_DISABLE_MOVEMENT);
+    }
+
+    @Override
+    public void takeitpairs$disableClick(boolean disable) {
+        this.dataTracker.set(TAKEITPAIRS_DISABLE_CLICK, disable);
+    }
+
+    @Override
+    public boolean takeitpairs$isClickDisabled() {
+        return this.dataTracker.get(TAKEITPAIRS_DISABLE_CLICK);
     }
 
     @Redirect(

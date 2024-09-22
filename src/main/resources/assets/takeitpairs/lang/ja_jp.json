@@ -13,8 +13,15 @@
     "key.takeitpairs.category.render": "TakeItPairs - レンダリング",
     "key.takeitpairs.riderpos.ride_on_shoulders": "肩車モードの切り替え",
     "key.takeitpairs.category.debug": "TakeItPairs - デバッグ",
+    "key.takeitpairs.category.disable": "TakeItPairs - 無効化",
     "key.takeitpairs.riderpos.y.increase": "乗っているプレイヤーのY座標を上げる",
     "key.takeitpairs.riderpos.y.decrease": "乗っているプレイヤーのY座標を下げる",
     "key.takeitpairs.riderpos.z.increase": "乗っているプレイヤーのZ座標を上げる",
-    "key.takeitpairs.riderpos.z.decrease": "乗っているプレイヤーのZ座標を下げる"
+    "key.takeitpairs.riderpos.z.decrease": "乗っているプレイヤーのZ座標を下げる",
+    "key.takeitpairs.disable.movement": "移動",
+    "key.takeitpairs.disable.click": "マウスクリック",
+    "notify.takeitpairs.disable.movement": "移動: 無効",
+    "notify.takeitpairs.enable.movement": "移動: 有効",
+    "notify.takeitpairs.disable.click": "マウスクリック: 無効",
+    "notify.takeitpairs.enable.click": "マウスクリック: 有効"
 }

@@ -9,6 +9,7 @@
     "MixinLivingEntity",
     "MixinLookAtEntityGoal",
     "MixinNearestPlayersSensor",
+    "MixinPlayerEntity",
     "MixinRespawnAnchorBlock",
     "MixinServerPlayerEntity"
   ],

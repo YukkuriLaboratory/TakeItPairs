@@ -14,6 +14,7 @@
     "key.takeitpairs.riderpos.ride_on_shoulders": "Ride on shoulders Mode On/Off",
     "key.takeitpairs.category.debug": "TakeItPairs - Debug",
     "key.takeitpairs.category.disable": "TakeItPairs - Disable",
+    "key.takeitpairs.rider.invisible": "Toggle Rider rendering",
     "key.takeitpairs.riderpos.y.increase": "Increase Rider's pos Y",
     "key.takeitpairs.riderpos.y.decrease": "Decrease Rider's pos Y",
     "key.takeitpairs.riderpos.z.increase": "Increase Rider's pos Z",

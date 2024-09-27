@@ -14,6 +14,7 @@
     "key.takeitpairs.riderpos.ride_on_shoulders": "肩車モードの切り替え",
     "key.takeitpairs.category.debug": "TakeItPairs - デバッグ",
     "key.takeitpairs.category.disable": "TakeItPairs - 無効化",
+    "key.takeitpairs.rider.invisible": "乗っているプレイヤーの描画切り替え",
     "key.takeitpairs.riderpos.y.increase": "乗っているプレイヤーのY座標を上げる",
     "key.takeitpairs.riderpos.y.decrease": "乗っているプレイヤーのY座標を下げる",
     "key.takeitpairs.riderpos.z.increase": "乗っているプレイヤーのZ座標を上げる",

@@ -16,7 +16,9 @@ public class TakeItPairsKeyBinds {
     private static final String GENERAL_CATEGORY = "key.takeitpairs.category.render",
             DISABLE_CATEGORY = "key.takeitpairs.category.disable",
             DEBUG_CATEGORY = "key.takeitpairs.category.debug"; // TODO add to lang file
-    private static KeyBinding RIDER_POS_Y_INCREASE,
+    private static KeyBinding
+            RIDER_TOGGLE_INVISIBLE,
+            RIDER_POS_Y_INCREASE,
             RIDER_POS_Y_DECREASE,
             RIDER_POS_Z_INCREASE,
             RIDER_POS_Z_DECREASE,
@@ -26,6 +28,11 @@ public class TakeItPairsKeyBinds {
 
     public static void init() {
         // TODO needs to change translation key in lang file
+        RIDER_TOGGLE_INVISIBLE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.takeitpairs.rider.invisible",
+                GLFW.GLFW_KEY_UNKNOWN,
+                GENERAL_CATEGORY
+        ));
         // Rider Pos Y
         RIDER_POS_Y_INCREASE = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.takeitpairs.riderpos.y.increase",
@@ -76,6 +83,10 @@ public class TakeItPairsKeyBinds {
         // Render
         while (RIDE_ON_SHOULDERS.wasPressed()) {
             config.setShoulderRideMode(!config.isShoulderRideMode());
+            ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
+        }
+        while (RIDER_TOGGLE_INVISIBLE.wasPressed()) {
+            config.setInvisibleRiderOnRideMode(!config.getInvisibleRiderOnRideMode());
             ((TakeItPairs$ClientConfigHolder) client).takeitpairs$updateClientConfig();
         }
 

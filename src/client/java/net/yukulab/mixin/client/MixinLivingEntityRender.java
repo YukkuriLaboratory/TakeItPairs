@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.yukulab.client.extension.TakeItPairs$ClientConfigHolder;
 import net.yukulab.config.ClientConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,8 +28,17 @@ public abstract class MixinLivingEntityRender<T extends LivingEntity, M extends 
         double riderPosZ = -(config.isShoulderRideMode() ? config.getShoulderModeRiderZ() : config.getRiderPosZ());
 
         // === Change rider pos from config value ===
-        if (livingEntity instanceof PlayerEntity playerEntity && playerEntity.hasVehicle() && playerEntity.getVehicle() instanceof PlayerEntity) {
-            matrixStack.translate(0, riderPosY, riderPosZ);
+        if (livingEntity instanceof PlayerEntity playerEntity && playerEntity.hasVehicle() && playerEntity.getVehicle() instanceof PlayerEntity vehicleEntity) {
+            var offset = takeitpairs$checkSize(vehicleEntity, 1);
+            matrixStack.translate(0, riderPosY*offset, riderPosZ*offset);
         }
+    }
+
+    @Unique
+    public int takeitpairs$checkSize(PlayerEntity playerEntity, int n) {
+        if(playerEntity.hasVehicle() && playerEntity.getVehicle() instanceof PlayerEntity vehicleEntity) {
+            return takeitpairs$checkSize(vehicleEntity, n+1);
+        }
+        return n;
     }
 }

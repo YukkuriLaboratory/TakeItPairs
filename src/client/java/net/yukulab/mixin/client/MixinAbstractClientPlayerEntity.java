@@ -1,11 +1,8 @@
 package net.yukulab.mixin.client;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAttachmentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.util.math.BlockPos;
@@ -42,8 +39,9 @@ abstract public class MixinAbstractClientPlayerEntity extends PlayerEntity {
         if (passenger instanceof PlayerEntity) {
             var vehicle = passenger.getVehicle();
             if (vehicle == null) return;
-            passenger.setBodyYaw(vehicle.getYaw());
-            float f = MathHelper.wrapDegrees(passenger.getYaw() - vehicle.getYaw());
+            var bodyYaw = vehicle.hasVehicle() ? vehicle.getBodyYaw() : vehicle.getYaw();
+            passenger.setBodyYaw(bodyYaw);
+            float f = MathHelper.wrapDegrees(passenger.getYaw() - bodyYaw);
             float g = MathHelper.clamp(f, -105.0F, 105.0F);
             passenger.prevYaw += g - f;
             passenger.setYaw(passenger.getYaw() + g - f);

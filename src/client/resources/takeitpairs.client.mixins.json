@@ -5,6 +5,7 @@
   "client": [
     "MixinAbstractClientPlayerEntity",
     "MixinClientPlayerInteractionManager",
+    "MixinGameRender",
     "MixinKeyboardInput",
     "MixinLivingEntityRender",
     "MixinMinecraftClient",

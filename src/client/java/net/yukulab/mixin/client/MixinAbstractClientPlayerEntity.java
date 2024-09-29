@@ -37,8 +37,11 @@ abstract public class MixinAbstractClientPlayerEntity extends PlayerEntity {
      */
     private void clampPassengerYaw(Entity passenger) {
         if (passenger instanceof PlayerEntity) {
-            passenger.setBodyYaw(getYaw());
-            float f = MathHelper.wrapDegrees(passenger.getYaw() - this.getYaw());
+            var vehicle = passenger.getVehicle();
+            if (vehicle == null) return;
+            var bodyYaw = vehicle.hasVehicle() ? vehicle.getBodyYaw() : vehicle.getYaw();
+            passenger.setBodyYaw(bodyYaw);
+            float f = MathHelper.wrapDegrees(passenger.getYaw() - bodyYaw);
             float g = MathHelper.clamp(f, -105.0F, 105.0F);
             passenger.prevYaw += g - f;
             passenger.setYaw(passenger.getYaw() + g - f);

@@ -1,6 +1,9 @@
 # Take It Pairs
 
-このMODは2人で縛りプレイを行う際に進行不可能な状態を防ぐための補助システムを追加します
+> このMODはしう氏の2024年10月企画、「かたぐるまいくら」のために制作さました
+> [![動画](http://img.youtube.com/vi/lW_JiFZJHL4/0.jpg)](https://www.youtube.com/watch?v=lW_JiFZJHL4&list=PLAk_kz3mvfCtRbrTYj36klhMcctkOP71I)
+
+このMODは2人で片方がクリックのみ、もう一方が移動のみという縛りプレイを行う際に進行不可能な状態を防ぐための補助システムを追加します
 
 機能は以下の通りです
 - 食べ物を食べさせてあげられる機能(飲み物も対応)
@@ -16,6 +19,7 @@
 - デフォルトで全体の半数が寝ると朝になるように
 
 依存Mod
-- Fabric API
-- ModMenu
-- Cloth Config
+
+- [Fabric API](https://modrinth.com/mod/fabric-api)
+- [ModMenu](https://modrinth.com/mod/modmenu)
+- [Cloth Config](https://modrinth.com/mod/cloth-config)

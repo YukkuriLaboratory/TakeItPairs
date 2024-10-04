@@ -11,7 +11,8 @@
     "MixinNearestPlayersSensor",
     "MixinPlayerEntity",
     "MixinRespawnAnchorBlock",
-    "MixinServerPlayerEntity"
+    "MixinServerPlayerEntity",
+    "MixinServerWorld"
   ],
   "injectors": {
     "defaultRequire": 1

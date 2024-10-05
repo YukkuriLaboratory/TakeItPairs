@@ -197,7 +197,6 @@ public abstract class MixinServerPlayerEntity extends LivingEntity implements Ta
      */
     @Unique
     private boolean takeitpairs$shouldSpawnFeedingEffects(ItemStack food) {
-        if (food.isEmpty()) return false;
         var maxUseTime = food.getMaxUseTime(takeitpairs$feedingPlayer);
         var timeDiff = maxUseTime - takeitpairs$feedingTimeLeft;
         int min = (int) (maxUseTime * 0.21785f);

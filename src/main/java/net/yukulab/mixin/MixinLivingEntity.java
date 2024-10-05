@@ -46,6 +46,7 @@ abstract public class MixinLivingEntity implements TakeIrPairs$ForceSpawnConsump
     @SuppressWarnings("UnreachableCode")
     private void takeitpairs$spawnItemParticlesForAll(ItemStack stack, int count) {
         var livingEntity = (LivingEntity) (Object) this;
+        var viewStack = stack.copy();
         if (livingEntity.getWorld() instanceof ServerWorld serverWorld) {
             for (int i = 0; i < count; i++) {
                 Vec3d vec3d = new Vec3d((livingEntity.getRandom().nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0.0);
@@ -57,7 +58,7 @@ abstract public class MixinLivingEntity implements TakeIrPairs$ForceSpawnConsump
                 vec3d2 = vec3d2.rotateY(-livingEntity.getYaw() * (float) (Math.PI / 180.0));
                 vec3d2 = vec3d2.add(livingEntity.getX(), livingEntity.getEyeY(), livingEntity.getZ());
 
-                serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, stack), vec3d2.x, vec3d2.y, vec3d2.z, 1, vec3d.x, vec3d.y + 0.05, vec3d.z, 0.05);
+                serverWorld.spawnParticles(new ItemStackParticleEffect(ParticleTypes.ITEM, viewStack), vec3d2.x, vec3d2.y, vec3d2.z, 1, vec3d.x, vec3d.y + 0.05, vec3d.z, 0.05);
             }
         }
     }

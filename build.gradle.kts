@@ -3,9 +3,10 @@ plugins {
 	id("maven-publish")
 }
 
-val mod_version: String by project
+val minecraft_version: String by project
+val mod_version = System.getenv("MOD_VERSION") ?: System.getenv("GITHUB_SHA")?.take(7) ?: "0.0.0"
 val maven_group: String by project
-version = mod_version
+version = "$mod_version+$minecraft_version"
 group = maven_group
 
 base {
@@ -36,7 +37,6 @@ loom {
 
 }
 
-val minecraft_version: String by project
 val yarn_mappings: String by project
 val loader_version: String by project
 val fabric_version: String by project
